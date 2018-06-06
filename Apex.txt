@@ -1,0 +1,58 @@
+sidescroller 8-bit
+items
+health
+score system?
+level design - boss at the end
+towns in between to give new quests plus further story ?
+fun addicting fights and levels
+reminiscent music style - sm3, gaiden, etc
+7 seas (equivalent to world like in sm3) - one major boss per sea
+maybe include devil fruit element for variety ?
+
+on the surface look:
+Hikikomori - pirate, exploring the seas trying to become famous rich etc. Drunkard. Lazy. Womanizer. swordsmen. 
+filled with average crews
+gains crew members along way - part of story
+The 7 tyrants of the seas - major enemies
+maybe include levels where navy/gov tries to attack Hikikomori
+King of the 7 seas = last boss
+4-6 levels, one final level (tyrant), 2 towns, give main quests plus side quests
+take ship and crew damage mechanism in some levels
+ship v ship gimmick ?
+diff. crew members perspective (to humanize and attach player to them by them having motivations and following their story as well) aka play the crew members
+
+crew members:
+idk
+
+towns:
+used to buy materials for repairing ship after level
+heal crew members plus main character
+npcs that give quests
+
+total sprites:
+Hikikomori
+Crew Members
+general enemy sprites for average crews
+major enemy sprites
+major enemy crew members sprites
+king of the 7 seas sprite
+government people general sprites
+npc sprites in the town (general + specific)
+
+animations:
+main characters/ abilities with items in-game and main weapon or power
+general enemy animations
+government enemy animations
+talking animations for npcs
+boss animations (7 tyrants + king)
+prologue animation to introuce king + tyrant
+animation per world introducing each tyrant
+ship moving animation
+
+per world:
+start with town gain quest and accomplish with levels (which is the major thing they have to do as players to progress)
+visit next town stock up on materials and next major quest maybe backtrack sidequests if they wish
+doing quests attracts attention of tyrant for some reason
+fight tyrant
+somehow slowly introduce tyrants and king in prologue animation
+
