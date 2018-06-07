@@ -14,10 +14,10 @@ public class Item extends Entity{
 
 	public Item(Texture texture, double x, double y, LevelMap levelMap, String name, int itemID) {
 		super(texture, x, y, levelMap);
-		pickedUp = false;
+		this.pickedUp = false;
 		this.itemName = name;
 		this.itemID = itemID;
-		itemCount = 1;
+		this.itemCount = 1;
 	}
 
 	@Override
@@ -47,6 +47,10 @@ public class Item extends Entity{
 	
 	public void setItemCount(int newCount) {
 		this.itemCount = newCount;
+	}
+	
+	public String getName() {
+		return itemName;
 	}
 
 }

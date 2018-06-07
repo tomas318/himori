@@ -34,3 +34,4 @@ public class Fonts {
 		drawString(g, f, c, str, x, y);
 	}
 }
+

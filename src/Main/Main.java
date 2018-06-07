@@ -2,6 +2,7 @@ package Main;
 
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
@@ -11,6 +12,7 @@ import GameStates.GameState;
 import GameStates.InstructionsState;
 import GameStates.MenuState;
 import GameStates.WinState;
+import Graphical.CustomFontLoader;
 import Inputs.KeyInput;
 import Inputs.MouseInput;
 import LevelUtility.LevelMap;
@@ -26,12 +28,12 @@ public class Main extends Canvas implements Runnable {
 	public static final String TITLE = "Himori's Adventure";
 	public static final int WIDTH = 640, HEIGHT = WIDTH / 4 * 3;
 	public static final boolean DEBUGMODE = false;
+	public static Font EIGHTBIT20;
 	private Thread thread;
 	public static ThreadHandler Handler = new ThreadHandler(5);
 	private boolean running = false;
 	public static GameStateManager gsm;
 	public static Main ACCESS;
-	//private static AudioManager am;
 	public static String currentState = "Menu";
 	public static boolean hasRestarted = false;
 	
@@ -43,14 +45,13 @@ public class Main extends Canvas implements Runnable {
 		MouseInput mi = new MouseInput();
 		addMouseListener(mi);
 		addMouseMotionListener(mi);
+		EIGHTBIT20 = CustomFontLoader.loadFont("./resources/fonts/EIGHTBIT.ttf", 20);
 		gsm = new GameStateManager();
-		//am = new AudioManager();
 		gsm.addState(new MenuState());
 		gsm.addState(new InstructionsState());
 		gsm.addState(new GameState());
 		gsm.addState(new GameOverState());
 		gsm.addState(new WinState());
-		//am.addMusicPlayer(new MusicPlayer("Johnny_B_Goode_BTTF"), "Level1");
 		ACCESS = this;
 	}
 
