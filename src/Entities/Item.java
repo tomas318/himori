@@ -7,7 +7,7 @@ import LevelUtility.LevelMap;
 
 public class Item extends Entity{
 	
-	private boolean pickedUp;
+	protected boolean pickedUp;
 	private String itemName;
 	private int itemID;
 	private int itemCount = 0;

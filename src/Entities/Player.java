@@ -45,7 +45,7 @@ public class Player extends Mobile {
 
 	@Override
 	public void tick() {
-		if (playerInventory.getIsOpen() == true) {
+		if (playerInventory.getIsOpen() == false) {
 		if (KeyInput.isKeyDown(KeyEvent.VK_X)) {
 			isAttacking = true;
 		}if (KeyInput.wasKeyReleased(KeyEvent.VK_X)) {
@@ -99,7 +99,6 @@ public class Player extends Mobile {
 			else if (isMovingLeft() && !isAttacking)
 				playerAnimationLeft.render(g, x + offsetX, y + offsetY);
 			}
-		playerInventory.render(g, x, y);
 		}
 	}
 	

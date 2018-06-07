@@ -18,7 +18,7 @@ public class Inventory {
 	private Texture inventoryScreen;
 	private int invX = 64, invY = 48, 
 			invWidth = 512, invHeight = 384, 
-			invListCenterX = invX + 171, invListCenterY = invY + invHeight / 2 + 5,
+			invListCenterX = invX + 120, invListCenterY = invY + invHeight / 2 + 5,
 			invListSpacing = 30;
 	private int invImageX = 452, invImageY = 82, 
 			invImageWidth = 64, invImageHeight = 64;
@@ -59,7 +59,7 @@ public class Inventory {
 	
 	
 	public void tick() {
-		if (KeyInput.wasKeyPressed(KeyEvent.VK_I))
+		if (KeyInput.wasKeyPressed(KeyEvent.VK_E))
 			isOpen = !isOpen;
 		if (!isOpen) {
 			return;
@@ -71,6 +71,8 @@ public class Inventory {
 			currentOption = inventoryItems.size() - 1;
 		}if (currentOption >= inventoryItems.size()) {
 			currentOption = 0;
+		}if (KeyInput.wasKeyPressed(KeyEvent.VK_F)) {
+			useItem();
 		}
 	}
 	
@@ -86,5 +88,10 @@ public class Inventory {
 	
 	public boolean getIsOpen() {
 		return isOpen;
+	}
+	
+	public void useItem() {
+		inventoryItems.get(currentOption).tick();
+		inventoryItems.remove(currentOption);
 	}
 }

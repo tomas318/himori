@@ -13,6 +13,7 @@ import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
 
+import Entities.Ale;
 import Entities.Coin;
 import Entities.Enemy;
 import Entities.Entity;
@@ -40,6 +41,7 @@ public class LevelMap {
 	private ArrayList<Coin> coins;
 	private Coin coin;
 	private levelDoor door;
+	private Ale ale;
 	private boolean collisionFlag;
 
 	public LevelMap(String fileName, String worldName, MusicPlayer levelmusic) {
@@ -246,7 +248,7 @@ public class LevelMap {
 				}
 			}
 		}
-		for (int j = 0; j < Entities.size()-2; j++) {
+		for (int j = Entities.size() - 1; j >= 0; j--) {
 			Entity e = Entities.get(j);
 			e.render(g, offsetX, offsetY);
 			if (e instanceof Coin) {
@@ -262,13 +264,21 @@ public class LevelMap {
 					}else if (!player.getBounds().intersects(enemy.getBounds()) && collisionFlag) {
 						collisionFlag = false;
 					}else if (player.getBounds().intersects(enemy.getBounds()) && player.getisAttacking()) {
+						double spawnX = enemy.getX();
+						double spawnY = enemy.getY();
 						Entities.remove(j);
+						ale = new Ale(spawnX, spawnY, this, player);
 						player.incrementScore(6);
+					}
+				}else if (e instanceof Ale) {
+					if (player.getBounds().intersects(ale.getBounds())) {
+						player.getInventory().addItem(ale);
+						Entities.remove(e);
 					}
 				}
 			}
 		player.render(g, offsetX, offsetY);
-		player.postRender(g, offsetX, offsetY);
+		player.postRender(g, offsetX + 80, offsetY + 110);
 		g.setColor(Color.WHITE);
 		g.drawRect(0, 0, 640, 90);
 		g.setColor(Color.BLACK);
