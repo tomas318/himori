@@ -265,7 +265,7 @@ public class LevelMap {
 						double spawnX = enemy.getX();
 						double spawnY = enemy.getY();
 						Entities.remove(j);
-						ale = new Ale(spawnX + 2, spawnY, this, player);
+						ale = new Ale(spawnX, spawnY, this, player);
 						player.incrementScore(6);
 					}
 				}else if (e instanceof Ale) {
