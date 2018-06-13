@@ -18,7 +18,7 @@ public class Inventory {
 	private Texture inventoryScreen;
 	private int invX = 64, invY = 48, 
 			invWidth = 512, invHeight = 384, 
-			invListCenterX = invX + 120, invListCenterY = invY + invHeight / 2 + 5,
+			invListCenterX = invX + 100, invListCenterY = invY + invHeight / 2 + 55,
 			invListSpacing = 30;
 	private int invImageX = 452, invImageY = 82, 
 			invImageWidth = 64, invImageHeight = 64;
@@ -33,11 +33,12 @@ public class Inventory {
 		this.inventoryScreen = new Texture("inventoryscreen");
 	}
 	
-	public void render(Graphics2D g, double x, double y) {
+	public void render(Graphics2D g, double offsetX, double offsetY) {
 		if(!isOpen) {
 			return;
 		}else {
-			inventoryScreen.render(g, x, y);
+			//System.out.println("offsetX: "+ offsetX + " X: " + x + " offsetY: " + offsetY + " Y: " + y);
+			inventoryScreen.render(g, offsetX - x, offsetY - 100);
 			int inventoryLength = inventoryItems.size();
 			if (inventoryLength == 0) {
 				return;
@@ -51,10 +52,10 @@ public class Inventory {
 					}else {
 						Fonts.drawString(g, Main.Main.EIGHTBIT20, Color.WHITE, inventoryItems.get(currentOption+i).getName(), invListCenterX, invListCenterY + i * invListSpacing);	
 					}
-						}
-					}
 				}
 			}
+		}
+	}
 		
 	
 	
@@ -91,7 +92,10 @@ public class Inventory {
 	}
 	
 	public void useItem() {
+		if (inventoryItems.size() > 0) {
 		inventoryItems.get(currentOption).tick();
+		inventoryItems.get(currentOption).setPickedUp(false);
 		inventoryItems.remove(currentOption);
+		}
 	}
 }

@@ -38,7 +38,6 @@ public class LevelMap {
 	private Enemy enemy;
 	private ParallaxManager parallaxManager;
 	public MusicPlayer musicplayer;
-	private ArrayList<Coin> coins;
 	private Coin coin;
 	private levelDoor door;
 	private Ale ale;
@@ -53,7 +52,6 @@ public class LevelMap {
 		ParallaxLayer middleLayer = new ParallaxLayer(new Texture("parallax_middle"), (int) ((16 * .25) * -0.25));
 		ParallaxLayer frontLayer = new ParallaxLayer(new Texture("parallax_fronttest"), (int) ((16 * .25) * -0.4));
 		this.parallaxManager = new ParallaxManager(backLayer, middleLayer, frontLayer);
-		coins = new ArrayList<Coin>(50);
 		collisionFlag = false;
 		loadMap(fileName);
 	}
@@ -162,10 +160,11 @@ public class LevelMap {
 				}else if(id == 0xFFFF0000) {
 					enemy = new Enemy(convertTilestoPixels(x), convertTilestoPixels(y), this, player);
 				}else if (id == 0xFFF6FF00) {
-						 coin = new Coin(convertTilestoPixels(x), convertTilestoPixels(y), this);
-						coins.add(coin);
+					coin = new Coin(convertTilestoPixels(x), convertTilestoPixels(y), this);
 				}else if (id == 0xFF946213) {
 					door = new levelDoor(convertTilestoPixels(x), convertTilestoPixels(y), this, player);
+				}else if (id == 0xFF0dde12) {
+					ale = new Ale(convertTilestoPixels(x), convertTilestoPixels(y), this, player); 
 				}else if (Tile.getFromID(id) != null) {
 					setTile(x, y, Tile.getFromID(id));
 				}
@@ -248,16 +247,15 @@ public class LevelMap {
 				}
 			}
 		}
-		for (int j = Entities.size() - 1; j >= 0; j--) {
+		for (int j = Entities.size() - 1; j >= 0; j--) { // fix index out of bounds error
 			Entity e = Entities.get(j);
 			e.render(g, offsetX, offsetY);
 			if (e instanceof Coin) {
-				if (player.getBounds().intersects(coins.get(j).getBounds())) {
-					coins.remove(j);
+				if (player.getBounds().intersects(e.getBounds())) {
 					Entities.remove(j);
 					player.incrementScore(2);
 					}
-				}else if (e instanceof Enemy) {
+			}else if (e instanceof Enemy) {
 					if (player.getBounds().intersects(enemy.getBounds()) && !player.getisAttacking() && !collisionFlag) {
 						player.decrementHealth();
 						collisionFlag = true;
@@ -273,12 +271,14 @@ public class LevelMap {
 				}else if (e instanceof Ale) {
 					if (player.getBounds().intersects(ale.getBounds())) {
 						player.getInventory().addItem(ale);
+						ale.setPickedUp(true);
 						Entities.remove(e);
 					}
 				}
+			e.render(g, offsetX, offsetY);
 			}
 		player.render(g, offsetX, offsetY);
-		player.postRender(g, offsetX + 80, offsetY + 110);
+	    player.postRender(g, (int) player.getX(), (int) player.getY());
 		g.setColor(Color.WHITE);
 		g.drawRect(0, 0, 640, 90);
 		g.setColor(Color.BLACK);

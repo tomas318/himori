@@ -34,7 +34,7 @@ public class Player extends Mobile {
 						new Texture(new Texture("player_attackright"), 2, 1, 64),
 						new Texture(new Texture("player_attackright"), 3, 1, 64),
 						new Texture(new Texture("player_attackright"), 4, 1, 64)));
-		playerInventory = new Inventory(320, 240);
+		playerInventory = new Inventory((int) this.getX(), (int)this.getY() - 120);
 		isPlayer = true;
 		HEALTH = 3;
 		this.enemy = new Enemy[enemy.length];
@@ -69,6 +69,10 @@ public class Player extends Mobile {
 		}if (KeyInput.wasKeyReleased(KeyEvent.VK_UP)) {
 			isEnteringDoor = false;
 		}
+	}else if (playerInventory.getIsOpen() == true) {
+		isAttacking = false;
+		VelX = 0;
+		VelY = 0;
 	}
 		playerInventory.tick();
 		super.tick();
