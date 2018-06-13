@@ -11,16 +11,16 @@ public class Item extends Entity{
 	private String itemName;
 	private int itemID;
 	private int itemCount = 0;
+	private double x, y;
 
-	public Item(Texture texture, double x, double y, LevelMap levelMap, String name, int itemID) {
-		super(texture, x, y, levelMap);
+	public Item(Texture texture, double x, double y, LevelMap levelmap, String name, int itemID) {
+		super(texture, x, y, levelmap);
 		this.pickedUp = false;
 		this.itemName = name;
 		this.itemID = itemID;
 		this.itemCount = 1;
 	}
 
-	@Override
 	public void tick() {
 	}
 	

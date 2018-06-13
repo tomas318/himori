@@ -95,11 +95,6 @@ public class Mobile extends Entity {
 		}
 	}
 	
-	
-	//public void checkforDamage() {
-	//	
-	//}
-
 	protected void gravity() {
 		VelY += GRAVITY;
 		if (VelY > MAXVelY) {

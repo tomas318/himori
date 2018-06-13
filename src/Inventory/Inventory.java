@@ -38,7 +38,7 @@ public class Inventory {
 			return;
 		}else {
 			//System.out.println("offsetX: "+ offsetX + " X: " + x + " offsetY: " + offsetY + " Y: " + y);
-			inventoryScreen.render(g, offsetX - x, offsetY - 100);
+			inventoryScreen.render(g, x + offsetX / 2, offsetY - y / 2);
 			int inventoryLength = inventoryItems.size();
 			if (inventoryLength == 0) {
 				return;

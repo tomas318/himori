@@ -2,14 +2,10 @@ package LevelUtility;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
 
@@ -23,9 +19,8 @@ import GameStates.GameState;
 import Graphical.Texture;
 import Managers.ParallaxManager;
 import Music.MusicPlayer;
-import Music.SoundEffectPlayer;
 
-public class LevelMap {
+public class LevelMap{
 
 	private static final int TILESIZE = 32;
 	private static final int TILESIZEBITS = 5; // 2^5(bits) = TILESIZE (32)
@@ -42,9 +37,10 @@ public class LevelMap {
 	private levelDoor door;
 	private Ale ale;
 	private boolean collisionFlag;
+	
 
 	public LevelMap(String fileName, String worldName, MusicPlayer levelmusic) {
-		// if wanting to design custom levels just put these paramaters inside the constructor
+		// if wanting to design custom levels just put these parameters inside the constructor
 		this.worldName = worldName;
 		musicplayer = levelmusic;
 		Entities = new ArrayList<Entity>();
@@ -163,8 +159,8 @@ public class LevelMap {
 					coin = new Coin(convertTilestoPixels(x), convertTilestoPixels(y), this);
 				}else if (id == 0xFF946213) {
 					door = new levelDoor(convertTilestoPixels(x), convertTilestoPixels(y), this, player);
-				}else if (id == 0xFF0dde12) {
-					ale = new Ale(convertTilestoPixels(x), convertTilestoPixels(y), this, player); 
+				}else if (id == 0xFF0DDE12) {
+					ale = new Ale(convertTilestoPixels(x), convertTilestoPixels(y), this, player);
 				}else if (Tile.getFromID(id) != null) {
 					setTile(x, y, Tile.getFromID(id));
 				}
@@ -247,7 +243,7 @@ public class LevelMap {
 				}
 			}
 		}
-		for (int j = Entities.size() - 1; j >= 0; j--) { // fix index out of bounds error
+		for (int j = Entities.size() - 1; j >= 0; j--) {
 			Entity e = Entities.get(j);
 			e.render(g, offsetX, offsetY);
 			if (e instanceof Coin) {
@@ -255,45 +251,44 @@ public class LevelMap {
 					Entities.remove(j);
 					player.incrementScore(2);
 					}
-			}else if (e instanceof Enemy) {
+				}else if (e instanceof Enemy) {
 					if (player.getBounds().intersects(enemy.getBounds()) && !player.getisAttacking() && !collisionFlag) {
 						player.decrementHealth();
 						collisionFlag = true;
 					}else if (!player.getBounds().intersects(enemy.getBounds()) && collisionFlag) {
 						collisionFlag = false;
 					}else if (player.getBounds().intersects(enemy.getBounds()) && player.getisAttacking()) {
-						double spawnX = enemy.getX();
-						double spawnY = enemy.getY();
 						Entities.remove(j);
-						ale = new Ale(spawnX, spawnY, this, player);
 						player.incrementScore(6);
 					}
 				}else if (e instanceof Ale) {
-					if (player.getBounds().intersects(ale.getBounds())) {
+					if (player.getBounds().intersects(e.getBounds())) {
 						player.getInventory().addItem(ale);
 						ale.setPickedUp(true);
-						Entities.remove(e);
+						Entities.remove(j);
 					}
 				}
-			e.render(g, offsetX, offsetY);
 			}
 		player.render(g, offsetX, offsetY);
-	    player.postRender(g, (int) player.getX(), (int) player.getY());
+		player.postRender(g, offsetX + 80, offsetY + 110);
 		g.setColor(Color.WHITE);
 		g.drawRect(0, 0, 640, 90);
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, 640, 90);
 		for (int p = 0; p <= player.getSCORE(); p = p + 2) {
+			System.out.println("" + player.getSCORE());
 			if (player.getSCORE() == p) {
+				if (player.getSCORE() <= 100) {
 				Texture score = new Texture("Score_" + p);
 				score.render(g, 560, 30);
+				}
 			}
 		}
 	door.render(g);
 	if (door.getIsOpened()) {
+		player.incrementScore(0);
 		door.render(g);
 		Entities.clear();
-		player.incrementScore(0);
 		door.setIsOpened(false);
 		door.setisTouching(false);
 		Main.Main.gsm.addState(new GameState());
@@ -310,6 +305,7 @@ public class LevelMap {
 		}if (player.getHealth() == 0) {
 			Entities.clear();
 			player.setHealth(3);
+			player.incrementScore(0);
 			player.setisAttacking(false);
 			Main.Main.gsm.setState("GameOver");
 		}
