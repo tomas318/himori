@@ -17,14 +17,14 @@ public class Tile {
 	protected int ID;
 	
 	public static final Tile tile1 = new Tile(0xFFFFFFFF, new Texture(terrain, 1, 1, 32));
-	public static final Tile tile2 = new Tile(0xFFFF0000, new Texture(terrain, 2, 1, 32));
+	public static final Tile tile2 = new Tile(0xFF00B4FF, new Texture(terrain, 2, 1, 32));
 
 	
 
 	private Tile(int ID, Texture sprite) {
 		this.ID = ID;
 		this.sprite = sprite;
-		solid = true;
+		this.solid = true;
 		tileMap.put(ID, this);
 	}
 	

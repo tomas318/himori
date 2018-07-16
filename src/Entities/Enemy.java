@@ -40,9 +40,4 @@ public class Enemy extends Mobile{
 		}
 		super.tick();
 	}
-	
-	public void damage() {
-		HEALTH--;
-	}
-
 }

@@ -14,6 +14,11 @@ public class Ale extends Item{
 		this.player = player;
 	}
 	
+	public Ale(Player player) {
+		super(new Texture("ale"), 0);
+		this.player = player;
+	}
+	
 	public void tick() {
 		if (pickedUp && player.getInventory().getIsOpen() && player.getHealth() <= 2) {
 			player.setHealth(player.getHealth() + 1);

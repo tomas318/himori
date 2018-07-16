@@ -20,6 +20,12 @@ public class Item extends Entity{
 		this.itemID = itemID;
 		this.itemCount = 1;
 	}
+	
+	public Item(Texture texture, int itemID) {
+		super(texture);
+		this.itemID = itemID;
+		this.itemCount = 1;
+	}
 
 	public void tick() {
 	}

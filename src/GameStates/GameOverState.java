@@ -70,6 +70,18 @@ public class GameOverState implements State{
 	private void selectOption(GameStateManager gameStateManager) {
 		if (currentOption == 0) {
 			Main.Main.hasRestarted = true;
+			Main.Main.playerLives = 3;
+			Main.Main.currentLevel = 1;
+			Main.Main.unlockedLevel = 1;
+			
+			
+			
+			
+			
+			
+			
+			
+			
 			Main.Main.gsm.addState(new GameState());
 			Main.Main.gsm.addState(new MenuState());
 			gameStateManager.setState("Menu");

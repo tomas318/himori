@@ -2,6 +2,7 @@ package LevelUtility;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -13,10 +14,15 @@ import Entities.Ale;
 import Entities.Coin;
 import Entities.Enemy;
 import Entities.Entity;
+import Entities.NPC;
 import Entities.Player;
 import Entities.levelDoor;
 import GameStates.GameState;
+import GameStates.LevelSelector;
+import GameStates.PauseScreen;
+import Graphical.Fonts;
 import Graphical.Texture;
+import Inputs.KeyInput;
 import Managers.ParallaxManager;
 import Music.MusicPlayer;
 
@@ -27,21 +33,24 @@ public class LevelMap{
 
 	private String worldName;
 	private int worldWidth, worldHeight;
+	public static int currentLevel;
 	private Tile[] Tiles;
-	private ArrayList<Entity> Entities;
-	private Player player;
+	public static ArrayList<Entity> Entities;
+	public static Player player;
 	private Enemy enemy;
 	private ParallaxManager parallaxManager;
 	public MusicPlayer musicplayer;
 	private Coin coin;
 	private levelDoor door;
 	private Ale ale;
+	private NPC npc;
 	private boolean collisionFlag;
 	
 
-	public LevelMap(String fileName, String worldName, MusicPlayer levelmusic) {
+	public LevelMap(String fileName, String worldName, MusicPlayer levelmusic, int currentLevel) {
 		// if wanting to design custom levels just put these parameters inside the constructor
 		this.worldName = worldName;
+		this.currentLevel = currentLevel;
 		musicplayer = levelmusic;
 		Entities = new ArrayList<Entity>();
 		ParallaxLayer backLayer = new ParallaxLayer(new Texture("parallax_back"), (int) ((16 * .25) * -0.15));
@@ -161,6 +170,8 @@ public class LevelMap{
 					door = new levelDoor(convertTilestoPixels(x), convertTilestoPixels(y), this, player);
 				}else if (id == 0xFF0DDE12) {
 					ale = new Ale(convertTilestoPixels(x), convertTilestoPixels(y), this, player);
+				}else if (id == 0xFFFF00FC) {
+					npc = new NPC(convertTilestoPixels(x), convertTilestoPixels(y), this, "Welcome to level 1 fucking cuck", player);
 				}else if (Tile.getFromID(id) != null) {
 					setTile(x, y, Tile.getFromID(id));
 				}
@@ -200,6 +211,8 @@ public class LevelMap{
 			parallaxManager.setRight();
 		}if (player.isMoving()) {
 			parallaxManager.moveParallax();
+		}if (KeyInput.wasKeyPressed(KeyEvent.VK_ESCAPE)){
+			player.setPaused(true);
 		}
 		for (int i = 0; i < Entities.size(); i++) {
 			Entities.get(i).tick();
@@ -215,6 +228,10 @@ public class LevelMap{
 
 	public String getCurrentWorld() {
 		return worldName;
+	}
+	
+	public int getLevel() {
+		return currentLevel;
 	}
 	
 	public void exitState() {
@@ -250,7 +267,7 @@ public class LevelMap{
 				if (player.getBounds().intersects(e.getBounds())) {
 					Entities.remove(j);
 					player.incrementScore(2);
-					}
+				  }
 				}else if (e instanceof Enemy) {
 					if (player.getBounds().intersects(enemy.getBounds()) && !player.getisAttacking() && !collisionFlag) {
 						player.decrementHealth();
@@ -270,15 +287,18 @@ public class LevelMap{
 				}
 			}
 		player.render(g, offsetX, offsetY);
-		player.postRender(g, offsetX + 80, offsetY + 110);
+		player.postRender(g, offsetX - 800, offsetY);
 		g.setColor(Color.WHITE);
 		g.drawRect(0, 0, 640, 90);
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, 640, 90);
 		for (int p = 0; p <= player.getSCORE(); p = p + 2) {
-			System.out.println("" + player.getSCORE());
 			if (player.getSCORE() == p) {
 				if (player.getSCORE() <= 100) {
+					if (player.getSCORE() == 100) {
+						player.setLives(player.getLives() + 1);
+						player.incrementScore(0);
+					}
 				Texture score = new Texture("Score_" + p);
 				score.render(g, 560, 30);
 				}
@@ -291,8 +311,9 @@ public class LevelMap{
 		Entities.clear();
 		door.setIsOpened(false);
 		door.setisTouching(false);
+		Main.Main.unlockedLevel = Main.Main.currentLevel + 1;
 		Main.Main.gsm.addState(new GameState());
-		Main.Main.gsm.setState("Win");	
+		Main.Main.gsm.setState("LevelSelectorWorld1");
 	}if (player.getHealth() == 3) {
 			Texture fullhearts = new Texture("fullhearts");
 			fullhearts.render(g, 30, 20);
@@ -302,12 +323,24 @@ public class LevelMap{
 		}if (player.getHealth() == 1) {
 			Texture oneheart = new Texture("1heart");
 			oneheart.render(g, 30, 20);
-		}if (player.getHealth() == 0) {
+		}if (player.getHealth() == 0 && player.getLives() == 0) {
 			Entities.clear();
 			player.setHealth(3);
 			player.incrementScore(0);
 			player.setisAttacking(false);
 			Main.Main.gsm.setState("GameOver");
+		}if (player.getHealth() == 0 && player.getLives() > 0) {
+			Entities.clear();
+			Main.Main.playerLives -= 1;
+			player.setHealth(3);
+			player.incrementScore(0);
+			player.setisAttacking(false);
+			Main.Main.gsm.addState(new GameState());
+			Main.Main.gsm.setState("Level" + Main.Main.currentLevel);
+		}if (KeyInput.wasKeyPressed(KeyEvent.VK_ESCAPE)) {
+			player.setPaused(true);
+			Main.Main.gsm.addState(new PauseScreen());
+			Main.Main.gsm.setState("Pause");
 		}
 		
 	}

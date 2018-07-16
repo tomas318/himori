@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
+import Entities.Ale;
 import Entities.Item;
 import Graphical.Fonts;
 import Graphical.Texture;
@@ -87,6 +88,20 @@ public class Inventory {
 		inventoryItems.add(item);
 	}
 	
+	public void addItem(int itemID, int itemCount) {
+		if (itemCount != 0) {
+		for (Item i: inventoryItems) {
+			if (i.getItemID() == itemID) {
+				i.setItemCount(i.getItemCount() + itemCount);
+				return;
+			}
+		}
+		if (itemID == 0) {
+			inventoryItems.add(new Ale(LevelUtility.LevelMap.player));
+		}
+	}
+}
+	
 	public boolean getIsOpen() {
 		return isOpen;
 	}
@@ -97,5 +112,25 @@ public class Inventory {
 		inventoryItems.get(currentOption).setPickedUp(false);
 		inventoryItems.remove(currentOption);
 		}
+	}
+	
+	public int getInventorySize() {
+		return inventoryItems.size();
+	}
+	
+	public int[] getItems() {
+		int[] Items = new int[inventoryItems.size()];
+		for (int i = 0; i < inventoryItems.size(); i++) {
+			Items[i] = inventoryItems.get(i).getItemID();
+		}
+		return Items;
+	}
+	
+	public int[] getItemCount() {
+		int[] itemCount = new int[inventoryItems.size()];
+		for (int i = 0; i < inventoryItems.size(); i++) {
+			itemCount[i] = inventoryItems.get(i).getItemCount();
+		}
+		return itemCount;
 	}
 }

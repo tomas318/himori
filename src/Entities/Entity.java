@@ -1,12 +1,11 @@
 package Entities;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
-import GameStates.GameState;
 import Graphical.Texture;
 import LevelUtility.LevelMap;
+import TownUtility.TownMap;
 
 public abstract class Entity {
 
@@ -14,7 +13,9 @@ public abstract class Entity {
 	protected Texture textureleft;
 	protected Texture textureright;
 	protected LevelMap levelMap;
+	protected TownMap townMap;
 	protected boolean isPlayer;
+	protected boolean isNPC;
 	protected boolean facingRight;
 	protected boolean facingLeft;
 
@@ -33,6 +34,19 @@ public abstract class Entity {
 		this.y = y;
 		this.levelMap = levelMap;
 		this.levelMap.addEntity(this);
+	}
+	
+	public Entity(Texture textureleft, Texture textureright, double x, double y, TownMap townMap) {
+		this.textureleft = textureleft;
+		this.textureright = textureright;
+		this.x = x;
+		this.y = y;
+		this.townMap = townMap;
+		this.townMap.addEntity(this);
+	}
+	
+	public Entity(Texture texture) {
+		this.textureleft = texture;
 	}
 
 	public void render(Graphics2D g, int offsetX, int offsetY) {

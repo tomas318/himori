@@ -9,10 +9,14 @@ import Main.Main;
 
 public class Fonts {
 	
+	private static int stringX, stringY;
+	
 	public static void drawString(Graphics g, Font f, Color c, String str, int x, int y) {
 		g.setColor(c);
 		g.setFont(f);
 		g.drawString(str, x, y);
+		stringX = x;
+		stringY = y;
 	}
 	
 	public static void drawString(Graphics g, Font f, Color c, String str) {
@@ -32,6 +36,14 @@ public class Fonts {
 		FontMetrics fm = g.getFontMetrics(f);
 		int x = ((Main.WIDTH - fm.stringWidth(str)) / 2);
 		drawString(g, f, c, str, x, y);
+	}
+	
+	public int getStringX() {
+		return stringX;
+	}
+	
+	public int getStringY() {
+		return stringY;
 	}
 }
 

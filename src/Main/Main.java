@@ -10,13 +10,13 @@ import java.awt.image.BufferStrategy;
 import GameStates.GameOverState;
 import GameStates.GameState;
 import GameStates.InstructionsState;
+import GameStates.LevelSelector;
 import GameStates.MenuState;
+import GameStates.PauseScreen;
 import GameStates.WinState;
 import Graphical.CustomFontLoader;
 import Inputs.KeyInput;
 import Inputs.MouseInput;
-import LevelUtility.LevelMap;
-import Managers.AudioManager;
 import Managers.GameStateManager;
 import Managers.LoadingScreenManager;
 import Music.MusicPlayer;
@@ -25,17 +25,23 @@ import Utility.ThreadHandler;
 public class Main extends Canvas implements Runnable {
 
 	private static final long serialVersionUID = 1596975759887741171L;
+	
 	public static final String TITLE = "Himori's Adventure";
 	public static final int WIDTH = 640, HEIGHT = WIDTH / 4 * 3;
 	public static final boolean DEBUGMODE = false;
+	
 	public static Font EIGHTBIT20;
 	private Thread thread;
 	public static ThreadHandler Handler = new ThreadHandler(5);
 	private boolean running = false;
+	public static boolean hasRestarted = false;
 	public static GameStateManager gsm;
 	public static Main ACCESS;
+	
 	public static String currentState = "Menu";
-	public static boolean hasRestarted = false;
+	public static int currentLevel = 1, unlockedLevel = 1;
+	public static int currentWorld = 1, unlockedWorld = 1;
+	public static int playerLives = 3;
 	
 	public Main() {
 		new LoadingScreenManager();
@@ -52,6 +58,8 @@ public class Main extends Canvas implements Runnable {
 		gsm.addState(new GameState());
 		gsm.addState(new GameOverState());
 		gsm.addState(new WinState());
+		gsm.addState(new PauseScreen());
+		gsm.addState(new LevelSelector());
 		ACCESS = this;
 	}
 
@@ -120,16 +128,12 @@ public class Main extends Canvas implements Runnable {
 		gsm.tick();
 	}
 
-	private static void runHandler() {
+	public static void main(String[] args) {
 		MusicPlayer level1music = new MusicPlayer("Johnny_B_Goode_BTTF");
 		Main game = new Main();
-		//Handler.runTask(level1music);
 		Handler.runTask(game);
+		//Handler.runTask(level1music);
 		Handler.joinHandler();
-	}
-
-	public static void main(String[] args) {
-		runHandler();	
 	}
 
 }
